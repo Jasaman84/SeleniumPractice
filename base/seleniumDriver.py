@@ -218,7 +218,24 @@ class SeleniumDriver():
             return False
 
 
+def expWait(self, locator, byType, timeout=10, poll_frequency=1):
+    try:
+        wait = WebDriverWait(self.driver, timeout, poll_frequency, ignored_exceptions=[NoSuchElementException,
+                                                                                       ElementNotVisibleException,
+                                                                                       ElementNotSelectableException,
+                                                                                       ElementNotInteractableException])
+        element = wait.until(EC.element_to_be_clickable((byType, locator)))
+        if element is not None:
+            self.log.info(f"After wait: Element found by locator ={locator} and byType ={byType}")
+            return element
+        else:
+            self.log.error(f"After wait:Can not find Element by locator ={locator} and byType ={byType}")
+            return False
 
+    except:
+        self.log.error(f"Failure in wait:Can not find Element by locator ={locator} and byType ={byType}")
+        print_stack()
+        return False
 
 
 
